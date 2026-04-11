@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Camila Dreams — Tienda</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;1,400&family=Dancing+Script:wght@600;700&family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ══ NAV ══ -->
+<nav>
+  <div class="nav-logo" onclick="filterCategory('all')">♥ Camila <small>Dreams</small></div>
+  <div class="search-bar">
+    <span>🔍</span>
+    <input type="text" placeholder="Buscar regalos personalizados..." id="searchInput" oninput="filterSearch()">
+  </div>
+  <div class="nav-right">
+    <button class="nav-wa" onclick="openWA('Hola! Quisiera información sobre sus productos de Camila Dreams 💕')">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.118 1.528 5.845L.057 23.714c-.076.3.195.572.497.497l5.87-1.47A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.797 9.797 0 01-5.003-1.375l-.36-.213-3.722.976.997-3.635-.234-.374A9.787 9.787 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg>
+      Escribir por WhatsApp
+    </button>
+  </div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-badge">✨ Regalos únicos · Hechos con amor</div>
+  <h1>Camila <em>Dreams</em></h1>
+  <p>Elige tu regalo, personalízalo y te contactamos por WhatsApp para coordinar todo</p>
+  <div class="hero-pills">
+    <span class="hero-pill active" onclick="filterCategory('all')">Todo</span>
+    <span class="hero-pill" onclick="filterCategory('Polos')">👕 Polos</span>
+    <span class="hero-pill" onclick="filterCategory('Tazas')">☕ Tazas</span>
+    <span class="hero-pill" onclick="filterCategory('Tomatodos')">🍶 Tomatodos</span>
+    <span class="hero-pill" onclick="filterCategory('Mousepads')">🖱️ Mousepads</span>
+    <span class="hero-pill" onclick="filterCategory('Rompecabezas')">🧩 Rompecabezas</span>
+  </div>
+</section>
+
+<!-- ══ LAYOUT ══ -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-title">Categorías</div>
+      <div class="filter-item cat-btn active" onclick="filterCategory('all',this)">🎁 Todos los productos</div>
+      <div class="filter-item cat-btn" onclick="filterCategory('Polos',this)">👕 Polos</div>
+      <div class="filter-item cat-btn" onclick="filterCategory('Tazas',this)">☕ Tazas</div>
+      <div class="filter-item cat-btn" onclick="filterCategory('Tomatodos',this)">🍶 Tomatodos</div>
+      <div class="filter-item cat-btn" onclick="filterCategory('Mousepads',this)">🖱️ Mousepads</div>
+      <div class="filter-item cat-btn" onclick="filterCategory('Rompecabezas',this)">🧩 Rompecabezas</div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">Ocasión</div>
+      <label class="filter-item"><input type="checkbox" onchange="applyFilters()"> Aniversario</label>
+      <label class="filter-item"><input type="checkbox" onchange="applyFilters()"> Cumpleaños</label>
+      <label class="filter-item"><input type="checkbox" onchange="applyFilters()"> San Valentín</label>
+      <label class="filter-item"><input type="checkbox" onchange="applyFilters()"> Día de la Madre</label>
+      <label class="filter-item"><input type="checkbox" onchange="applyFilters()"> Amistad</label>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="grid-header">
+      <h2 id="gridTitle">Todos los productos</h2>
+      <select class="sort-select" onchange="sortProducts(this.value)">
+        <option value="default">Ordenar por</option>
+        <option value="name">Nombre A–Z</option>
+        <option value="price">Menor precio</option>
+      </select>
+    </div>
+    <div class="products-grid" id="productsGrid"></div>
+  </main>
+</div>
+
+<!-- ══ PRODUCT MODAL ══ -->
+<div class="overlay" id="overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-img" id="modalImg"></div>
+    <div class="modal-body">
+      <div class="modal-cat" id="modalCat"></div>
+      <div class="modal-name" id="modalName"></div>
+      <div class="modal-desc" id="modalDesc"></div>
+      <div class="modal-price" id="modalPrice"></div>
+      <div id="modalOptions"></div>
+      <div class="qty-row">
+        <span class="qty-label">Cantidad</span>
+        <div class="qty-ctrl">
+          <button onclick="changeQty(-1)">−</button>
+          <span class="qty-val" id="qtyVal">1</span>
+          <button onclick="changeQty(1)">+</button>
+        </div>
+      </div>
+      <div class="opt-label">Mensaje o frase personalizada</div>
+      <textarea class="custom-input" id="customText" placeholder="Ej: Hecho con amor para ti ♥  (puede ir vacío si no deseas personalización)"></textarea>
+      <button class="wa-btn" onclick="sendWA()">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.118 1.528 5.845L.057 23.714c-.076.3.195.572.497.497l5.87-1.47A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.797 9.797 0 01-5.003-1.375l-.36-.213-3.722.976.997-3.635-.234-.374A9.787 9.787 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg>
+        Pedir por WhatsApp
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">💌 Abriendo WhatsApp…</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>♥ <strong>Camila Dreams</strong> — Regalos personalizados con amor &nbsp;|&nbsp; Pedidos por WhatsApp &nbsp;|&nbsp; ¡Cada regalo cuenta una historia!</p>
+</footer>
+
+<script>
+// ── CONFIG ──────────────────────────────────────────────
+const WA_NUMBER = '51999999999'; // ← REEMPLAZA con tu número (código país sin +)
+
+// ── CATÁLOGO ────────────────────────────────────────────
+const products = [
+  {
+    id:1, cat:'Polos', name:'Polo "Hecho con Amor"',
+    desc:'Polo 100% algodón personalizado con la frase y diseño de tu elección. Ideal para regalar en cualquier ocasión especial.',
+    icon:'👕', price:'S/ 45', badge:'Más vendido',
+    options:[
+      {label:'Talla', type:'text', values:['XS','S','M','L','XL','XXL']},
+      {label:'Color de polo', type:'color', values:['#ffffff','#ffb6c1','#c0392b','#2c3e50','#f5cba7']},
+    ]
+  },
+  {
+    id:2, cat:'Polos', name:'Polo "Detalles que Enamoran"',
+    desc:'Polo suave con diseño floral y frase personalizada bordada en el corazón. Perfecto para ella.',
+    icon:'👗', price:'S/ 48',
+    options:[
+      {label:'Talla', type:'text', values:['XS','S','M','L','XL']},
+      {label:'Color de polo', type:'color', values:['#fff8f9','#f8bbd0','#d4607a','#880e4f']},
+    ]
+  },
+  {
+    id:3, cat:'Tazas', name:'Taza "Mi Casualidad Bonita"',
+    desc:'Taza de cerámica de alta calidad con tu frase y foto favorita. Apta para microondas y lavavajillas.',
+    icon:'☕', price:'S/ 30', badge:'Nuevo',
+    options:[
+      {label:'Tamaño', type:'text', values:['330ml','450ml']},
+    ]
+  },
+  {
+    id:4, cat:'Tazas', name:'Taza "Amor del Bueno"',
+    desc:'Diseño romántico con corazones y mensaje personalizado. Perfecta para el cafecito de cada mañana.',
+    icon:'🫖', price:'S/ 30',
+    options:[
+      {label:'Tamaño', type:'text', values:['330ml','450ml']},
+    ]
+  },
+  {
+    id:5, cat:'Tomatodos', name:'Tomatodo "Amor del Bueno"',
+    desc:'Botella térmica de acero inoxidable con diseño personalizado. Mantiene frío y caliente por horas.',
+    icon:'🍶', price:'S/ 65', badge:'Popular',
+    options:[
+      {label:'Capacidad', type:'text', values:['500ml','750ml','1L']},
+      {label:'Color', type:'color', values:['#ffffff','#ffd1dc','#d4607a','#b0bec5','#90a4ae']},
+    ]
+  },
+  {
+    id:6, cat:'Tomatodos', name:'Tomatodo "Hecho con Amor"',
+    desc:'Tomatodo personalizado con asa y tapa segura. Diseño elegante con tu frase especial.',
+    icon:'🥤', price:'S/ 60',
+    options:[
+      {label:'Capacidad', type:'text', values:['500ml','750ml']},
+    ]
+  },
+  {
+    id:7, cat:'Mousepads', name:'Mousepad "Recuerdo Especial"',
+    desc:'Mousepad XXL de alta calidad con tu foto o diseño favorito. Superficie antideslizante y bordes cosidos.',
+    icon:'🖱️', price:'S/ 35',
+    options:[
+      {label:'Tamaño', type:'text', values:['30×25cm','40×30cm','80×30cm (XXL)']},
+    ]
+  },
+  {
+    id:8, cat:'Mousepads', name:'Mousepad "Collage de Amor"',
+    desc:'Crea un collage con tus fotos favoritas para un regalo único e irrepetible.',
+    icon:'🎨', price:'S/ 38', badge:'Personalizable',
+    options:[
+      {label:'Tamaño', type:'text', values:['30×25cm','40×30cm']},
+    ]
+  },
+  {
+    id:9, cat:'Rompecabezas', name:'Rompecabezas "Tu Foto Favorita"',
+    desc:'Rompecabezas de madera con tu foto impresa en alta resolución. ¡El regalo más original y divertido!',
+    icon:'🧩', price:'S/ 55', badge:'Nuevo',
+    options:[
+      {label:'Piezas', type:'text', values:['120 piezas','252 piezas','500 piezas']},
+    ]
+  },
+  {
+    id:10, cat:'Rompecabezas', name:'Rompecabezas "Collage de Recuerdos"',
+    desc:'Arma tu historia en piezas. Diseñamos el collage con tus fotos más especiales.',
+    icon:'🗓️', price:'S/ 65',
+    options:[
+      {label:'Piezas', type:'text', values:['252 piezas','500 piezas']},
+    ]
+  },
+];
+
+// ── STATE ────────────────────────────────────────────────
+let currentCat = 'all';
+let currentSearch = '';
+let currentProduct = null;
+let qty = 1;
+const selections = {};
+
+// ── RENDER ───────────────────────────────────────────────
+function renderGrid(list){
+  const grid = document.getElementById('productsGrid');
+  grid.innerHTML = list.length ? '' : '<p style="color:var(--muted);grid-column:1/-1;text-align:center;padding:2rem;">No se encontraron productos 😕</p>';
+  list.forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'pcard';
+    card.innerHTML = `
+      <div class="pcard-img">
+        ${p.badge ? `<span class="pcard-badge">${p.badge}</span>` : ''}
+        ${p.icon}
+      </div>
+      <div class="pcard-body">
+        <div class="pcard-cat">${p.cat}</div>
+        <div class="pcard-name">${p.name}</div>
+        <div class="pcard-desc">${p.desc.substring(0,65)}…</div>
+        <div class="pcard-price">${p.price}</div>
+      </div>
+      <button class="pcard-btn" onclick="openModal(${p.id})">
+        💚 Personalizar y Pedir
+      </button>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function getFiltered(){
+  let list = [...products];
+  if(currentCat !== 'all') list = list.filter(p=>p.cat===currentCat);
+  if(currentSearch) list = list.filter(p=>
+    p.name.toLowerCase().includes(currentSearch)||
+    p.cat.toLowerCase().includes(currentSearch)||
+    p.desc.toLowerCase().includes(currentSearch)
+  );
+  return list;
+}
+
+function filterCategory(cat, el){
+  currentCat = cat;
+  document.getElementById('gridTitle').textContent = cat==='all'?'Todos los productos':cat;
+  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
+  if(el) el.classList.add('active');
+  document.querySelectorAll('.hero-pill').forEach(b=>{
+    b.classList.toggle('active', b.textContent.includes(cat==='all'?'Todo':cat));
+  });
+  renderGrid(getFiltered());
+}
+
+function filterSearch(){
+  currentSearch = document.getElementById('searchInput').value.toLowerCase();
+  renderGrid(getFiltered());
+}
+
+function sortProducts(val){
+  let list = getFiltered();
+  if(val==='name') list.sort((a,b)=>a.name.localeCompare(b.name));
+  if(val==='price') list.sort((a,b)=>parseInt(a.price.replace(/\D/g,''))-parseInt(b.price.replace(/\D/g,'')));
+  renderGrid(list);
+}
+
+function applyFilters(){ renderGrid(getFiltered()); }
+
+// ── MODAL ────────────────────────────────────────────────
+function openModal(id){
+  currentProduct = products.find(p=>p.id===id);
+  qty = 1;
+  document.getElementById('qtyVal').textContent = 1;
+  document.getElementById('customText').value = '';
+  const p = currentProduct;
+  document.getElementById('modalImg').textContent = p.icon;
+  document.getElementById('modalCat').textContent = p.cat;
+  document.getElementById('modalName').textContent = p.name;
+  document.getElementById('modalDesc').textContent = p.desc;
+  document.getElementById('modalPrice').textContent = p.price;
+
+  const optContainer = document.getElementById('modalOptions');
+  optContainer.innerHTML = '';
+  if(p.options){
+    p.options.forEach((opt,oi)=>{
+      selections[oi] = null;
+      const div = document.createElement('div');
+      div.innerHTML = `<div class="opt-label">${opt.label}</div>`;
+      const group = document.createElement('div');
+      group.className = 'opt-group';
+      opt.values.forEach((v,vi)=>{
+        const btn = document.createElement('button');
+        btn.className = opt.type==='color' ? 'opt-btn color-btn' : 'opt-btn';
+        if(opt.type==='color') btn.style.background = v;
+        else btn.textContent = v;
+        btn.title = v;
+        btn.onclick = () => {
+          group.querySelectorAll('.opt-btn').forEach(b=>b.classList.remove('sel'));
+          btn.classList.add('sel');
+          selections[oi] = {label:opt.label, value: opt.type==='color'?v:v};
+        };
+        group.appendChild(btn);
+      });
+      div.appendChild(group);
+      optContainer.appendChild(div);
+    });
+  }
+
+  document.getElementById('overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e){
+  if(e && e.target !== document.getElementById('overlay')) return;
+  document.getElementById('overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function changeQty(d){
+  qty = Math.max(1, qty+d);
+  document.getElementById('qtyVal').textContent = qty;
+}
+
+// ── WHATSAPP ─────────────────────────────────────────────
+function sendWA(){
+  const p = currentProduct;
+  const custom = document.getElementById('customText').value.trim();
+  const opts = Object.values(selections).filter(Boolean).map(s=>`  • ${s.label}: ${s.value}`).join('\n');
+  let msg = `¡Hola Camila Dreams! 💕 Quisiera hacer un pedido:\n\n`;
+  msg += `🛍️ *Producto:* ${p.name}\n`;
+  msg += `🏷️ *Categoría:* ${p.cat}\n`;
+  msg += `💰 *Precio unitario:* ${p.price}\n`;
+  msg += `📦 *Cantidad:* ${qty}\n`;
+  if(opts) msg += `\n✨ *Personalización:*\n${opts}\n`;
+  if(custom) msg += `\n💬 *Mensaje/Frase:* "${custom}"\n`;
+  msg += `\n¡Espero su respuesta! 😊`;
+
+  openWA(msg);
+}
+
+function openWA(msg){
+  const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
+  window.open(url,'_blank');
+  showToast('💌 Abriendo WhatsApp…');
+}
+
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+// ── INIT ─────────────────────────────────────────────────
+renderGrid(products);
+</script>
+</body>
+</html>
