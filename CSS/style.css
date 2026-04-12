@@ -180,3 +180,51 @@
     .search-wrapper .form-control:focus { border-color: var(--rose); box-shadow: 0 0 0 3px rgba(212,96,122,.15); }
 
     .empty-msg { color: var(--muted); font-style: italic; }
+
+/* ── CARRUSEL ── */
+.carousel-banner {
+  max-height: 420px;
+  object-fit: cover;
+  object-position: center top;
+  width: 100%;
+}
+.hero-slide {
+  height: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+}
+.slide-2 { background: linear-gradient(135deg, #fde8ef 0%, #fff4f8 100%); }
+.slide-3 { background: linear-gradient(135deg, #fff0f5 0%, #fde8ef 100%); }
+.hero-slide-content h2 {
+  font-family: 'Dancing Script', cursive;
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  color: var(--dark);
+  margin: .5rem 0;
+}
+.hero-slide-content p {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  color: var(--muted);
+  margin-bottom: .5rem;
+}
+.carousel-indicators [data-bs-target] {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background-color: var(--rose);
+  opacity: .5;
+}
+.carousel-indicators .active { opacity: 1; }
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  filter: invert(35%) sepia(60%) saturate(400%) hue-rotate(300deg);
+}
+.pills-bar { background: #fde8ef; border-bottom: 1px solid rgba(212,96,122,.15); }
+
+@media(max-width: 576px) {
+  .carousel-banner { max-height: 220px; }
+  .hero-slide { height: 260px; }
+  .hero-slide-content h2 { font-size: 1.8rem; }
+}
