@@ -33,52 +33,36 @@
 
 <!-- ══ HERO CARRUSEL ══ -->
 <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="4500">
-
   <div class="carousel-indicators">
-    <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-current="true"></button>
+    <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
     <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
     <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"></button>
   </div>
-
   <div class="carousel-inner">
-
-    <!-- SLIDE 1 — Banner real -->
     <div class="carousel-item active">
       <img src="Img/banner1.png" class="d-block w-100 carousel-banner" alt="Camila Dreams">
     </div>
-
-    <!-- SLIDE 2 — Polos -->
     <div class="carousel-item">
       <div class="hero-slide slide-2">
         <div class="hero-slide-content">
-          <div class="hero-badge">👕 Nueva colección</div>
-          <h2>Polos Personalizados</h2>
-          <p>Con la frase que más los describe · Tallas XS a XXL</p>
-          <button class="pill-btn active mt-3"
-            onclick="filterCat('Polos',this); document.getElementById('productsGrid').scrollIntoView({behavior:'smooth'})">
-            Ver Polos →
-          </button>
+          <div class="hero-badge">👕 Polos personalizados</div>
+          <h2>Desde S/ 38</h2>
+          <p>Tallas 8, 10, S, M, L, XL · Con tu frase o diseño favorito</p>
+          <button class="pill-btn active mt-3" onclick="filterCat('Polos',this); document.getElementById('productsGrid').scrollIntoView({behavior:'smooth'})">Ver Polos →</button>
         </div>
       </div>
     </div>
-
-    <!-- SLIDE 3 — Rompecabezas -->
     <div class="carousel-item">
       <div class="hero-slide slide-3">
         <div class="hero-slide-content">
-          <div class="hero-badge">🧩 ¡Más pedido!</div>
-          <h2>Rompecabezas & Tazas</h2>
-          <p>El regalo más original · Hecho con tu foto favorita</p>
-          <button class="pill-btn active mt-3"
-            onclick="filterCat('Rompecabezas',this); document.getElementById('productsGrid').scrollIntoView({behavior:'smooth'})">
-            Ver Rompecabezas →
-          </button>
+          <div class="hero-badge">☕ Tazas & Tomatodos</div>
+          <h2>Desde S/ 22</h2>
+          <p>Tazas cónicas, mágicas, corazón · Tomatodos y vasos térmicos</p>
+          <button class="pill-btn active mt-3" onclick="filterCat('Tazas',this); document.getElementById('productsGrid').scrollIntoView({behavior:'smooth'})">Ver Tazas →</button>
         </div>
       </div>
     </div>
-
   </div>
-
   <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
     <span class="carousel-control-prev-icon"></span>
   </button>
@@ -90,11 +74,11 @@
 <!-- Pills de categorías -->
 <div class="pills-bar d-flex flex-wrap justify-content-center gap-2 py-3">
   <button class="pill-btn active" onclick="filterCat('all',this)">Todo</button>
+  <button class="pill-btn" onclick="filterCat('Gorros',this)">🧢 Gorros</button>
+  <button class="pill-btn" onclick="filterCat('Bolsas',this)">👜 Bolsas</button>
   <button class="pill-btn" onclick="filterCat('Polos',this)">👕 Polos</button>
   <button class="pill-btn" onclick="filterCat('Tazas',this)">☕ Tazas</button>
   <button class="pill-btn" onclick="filterCat('Tomatodos',this)">🍶 Tomatodos</button>
-  <button class="pill-btn" onclick="filterCat('Mousepads',this)">🖱️ Mousepads</button>
-  <button class="pill-btn" onclick="filterCat('Rompecabezas',this)">🧩 Rompecabezas</button>
 </div>
 
 <!-- ══ MAIN LAYOUT ══ -->
@@ -106,11 +90,11 @@
       <div class="sidebar-card mb-3">
         <div class="sidebar-title">Categorías</div>
         <div class="cat-item active" onclick="filterCat('all',this)">🎁 Todos los productos</div>
+        <div class="cat-item" onclick="filterCat('Gorros',this)">🧢 Gorros</div>
+        <div class="cat-item" onclick="filterCat('Bolsas',this)">👜 Bolsas</div>
         <div class="cat-item" onclick="filterCat('Polos',this)">👕 Polos</div>
         <div class="cat-item" onclick="filterCat('Tazas',this)">☕ Tazas</div>
         <div class="cat-item" onclick="filterCat('Tomatodos',this)">🍶 Tomatodos</div>
-        <div class="cat-item" onclick="filterCat('Mousepads',this)">🖱️ Mousepads</div>
-        <div class="cat-item" onclick="filterCat('Rompecabezas',this)">🧩 Rompecabezas</div>
       </div>
       <div class="sidebar-card">
         <div class="sidebar-title">Ocasión</div>
@@ -174,29 +158,39 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-const WA_NUMBER = '51999999999';
+const WA_NUMBER = '51999999999'; // ← Tu número aquí
 
 const products = [
-  { id:1, cat:'Polos', name:'Polo "Hecho con Amor"', desc:'Polo 100% algodón personalizado con frase y diseño a elección. Ideal para cualquier ocasión especial.', icon:'👕', price:45, badge:'Más vendido',
-    options:[{label:'Talla',type:'text',values:['XS','S','M','L','XL','XXL']},{label:'Color',type:'color',values:['#ffffff','#ffb6c1','#c0392b','#2c3e50','#f5cba7']}] },
-  { id:2, cat:'Polos', name:'Polo "Detalles que Enamoran"', desc:'Polo suave con diseño floral y frase personalizada. Perfecto para ella.', icon:'👗', price:48,
-    options:[{label:'Talla',type:'text',values:['XS','S','M','L','XL']},{label:'Color',type:'color',values:['#fff8f9','#f8bbd0','#d4607a','#880e4f']}] },
-  { id:3, cat:'Tazas', name:'Taza "Mi Casualidad Bonita"', desc:'Taza de cerámica con tu frase y foto favorita. Apta para microondas y lavavajillas.', icon:'☕', price:30, badge:'Nuevo',
-    options:[{label:'Tamaño',type:'text',values:['330ml','450ml']}] },
-  { id:4, cat:'Tazas', name:'Taza "Amor del Bueno"', desc:'Diseño romántico con corazones y mensaje personalizado para el cafecito de cada mañana.', icon:'🫖', price:30,
-    options:[{label:'Tamaño',type:'text',values:['330ml','450ml']}] },
-  { id:5, cat:'Tomatodos', name:'Tomatodo "Amor del Bueno"', desc:'Botella térmica de acero inoxidable con diseño personalizado. Mantiene frío y caliente por horas.', icon:'🍶', price:65, badge:'Popular',
-    options:[{label:'Capacidad',type:'text',values:['500ml','750ml','1L']},{label:'Color',type:'color',values:['#ffffff','#ffd1dc','#d4607a','#b0bec5']}] },
-  { id:6, cat:'Tomatodos', name:'Tomatodo "Hecho con Amor"', desc:'Tomatodo personalizado con asa y tapa segura. Diseño elegante con tu frase especial.', icon:'🥤', price:60,
-    options:[{label:'Capacidad',type:'text',values:['500ml','750ml']}] },
-  { id:7, cat:'Mousepads', name:'Mousepad "Recuerdo Especial"', desc:'Mousepad de alta calidad con tu foto o diseño favorito. Superficie antideslizante y bordes cosidos.', icon:'🖱️', price:35,
-    options:[{label:'Tamaño',type:'text',values:['30×25cm','40×30cm','80×30cm (XXL)']}] },
-  { id:8, cat:'Mousepads', name:'Mousepad "Collage de Amor"', desc:'Crea un collage con tus fotos favoritas para un regalo único e irrepetible.', icon:'🎨', price:38, badge:'Personalizable',
-    options:[{label:'Tamaño',type:'text',values:['30×25cm','40×30cm']}] },
-  { id:9, cat:'Rompecabezas', name:'Rompecabezas "Tu Foto Favorita"', desc:'Rompecabezas de madera con tu foto impresa en alta resolución. ¡El regalo más original!', icon:'🧩', price:55, badge:'Nuevo',
-    options:[{label:'Piezas',type:'text',values:['120 piezas','252 piezas','500 piezas']}] },
-  { id:10, cat:'Rompecabezas', name:'Rompecabezas "Collage de Recuerdos"', desc:'Arma tu historia en piezas. Diseñamos el collage con tus fotos más especiales.', icon:'🗓️', price:65,
-    options:[{label:'Piezas',type:'text',values:['252 piezas','500 piezas']}] },
+  // ── GORROS ──
+  { id:1,  cat:'Gorros',    name:'Gorro Drill Adulto',   desc:'Gorro de drill resistente, personalizado con tu diseño o frase favorita. Talla adulto.',          icon:'🧢', image:'Img/gorradrill.JPG', price:28 },
+  { id:2,  cat:'Gorros',    name:'Gorro Lona',            desc:'Gorro de lona premium personalizado. Ideal para el día a día con un toque especial.',              icon:'🎩', image:'Img/gorraLona.JPG', price:32 },
+
+  // ── BOLSAS ──
+  { id:3,  cat:'Bolsas',    name:'Bolsa Taflán Blanca',   desc:'Bolsa de taflán blanca personalizada, perfecta para regalos y eventos especiales.',               icon:'🛍️', image:'Img/bolsa1.jpeg', price:30 },
+  { id:4,  cat:'Bolsas',    name:'Bolsa Drill Mediana',   desc:'Bolsa de drill resistente tamaño mediano. Práctica y con diseño personalizado.',                  icon:'👜', image:'Img/bolso2.jpeg', price:32 },
+  { id:5,  cat:'Bolsas',    name:'Bolsa Drill Grande',    desc:'Bolsa de drill grande, ideal para llevar todo con estilo y un mensaje especial.',                  icon:'🎒', image:'Img/bolsa1.jpeg', price:35 },
+  { id:6,  cat:'Bolsas',    name:'Bolsa Tocuyo Grande',   desc:'Bolsa de tocuyo ecológica y resistente. Grande y personalizable.',                                icon:'👝', image:'Img/bolso2.jpeg', price:30 },
+  { id:7,  cat:'Bolsas',    name:'Bolsa Yute',            desc:'Bolsa de yute natural y elegante, personalizada con tu diseño. Eco-friendly.',                    icon:'🌿', image:'Img/bolsa-yute-personalizada.JPG', price:45, badge:'Premium' },
+
+  // ── POLOS ──
+  { id:8,  cat:'Polos',     name:'Polo Talla 8 (Niño)',   desc:'Polo personalizado para niño talla 8. Algodón suave con diseño a elección.',                      icon:'👕', image:'Img/Polo1.jpeg', price:38 },
+  { id:9,  cat:'Polos',     name:'Polo Talla 10 (Niño)',  desc:'Polo personalizado para niño talla 10. Cómodo, suave y con tu frase favorita.',                   icon:'👕', image:'Img/Polo2.jpeg', price:40 },
+  { id:10, cat:'Polos',     name:'Polo Talla S',          desc:'Polo adulto talla S personalizado. Ideal para regalar en cualquier ocasión especial.',             icon:'👕', image:'Img/poloM.jpeg', price:42 },
+  { id:11, cat:'Polos',     name:'Polo Talla M',          desc:'Polo adulto talla M personalizado con frase o diseño. 100% algodón.',                             icon:'👕', image:'Img/poloM.jpeg', price:45, badge:'Popular' },
+  { id:12, cat:'Polos',     name:'Polo Talla L',          desc:'Polo adulto talla L personalizado. Diseño único hecho con amor.',                                 icon:'👕', image:'Img/Polo1.jpeg', price:45 },
+  { id:13, cat:'Polos',     name:'Polo Talla XL',         desc:'Polo adulto talla XL personalizado. Amplio, cómodo y con el mensaje que elijas.',                 icon:'👕', image:'Img/Polo2.jpeg', price:48 },
+
+  // ── TAZAS ──
+  { id:14, cat:'Tazas',     name:'Taza Cónica 12 oz',     desc:'Taza cónica de cerámica 12 oz. Personalizada con tu foto o frase favorita. Apta para microondas.', icon:'☕', image:'Img/taza11oz.jpeg', price:22, badge:'Más vendida' },
+  //{ id:15, cat:'Tazas',     name:'Taza 17 oz',            desc:'Taza grande 17 oz personalizada. Para los que necesitan un café extra grande con amor.',          icon:'☕', price:26 },
+  { id:16, cat:'Tazas',     name:'Taza 15 oz',            desc:'Taza 15 oz personalizada con foto o diseño especial. Perfecta para regalar.',                    icon:'☕', image:'Img/taza11oz.jpeg', price:24 },
+  { id:17, cat:'Tazas',     name:'Taza Corazón 11 oz',    desc:'Taza en forma de corazón 11 oz. El regalo más romántico para quien más amas.',                   icon:'🫖', image:'Img/taza11oz.jpeg', price:25, badge:'Romántica' },
+  { id:18, cat:'Tazas',     name:'Taza Mágica 11 oz',     desc:'Taza mágica 11 oz: cambia de color al echarle agua caliente y revela tu diseño secreto.',        icon:'✨', image:'Img/taza11oz.jpeg', price:32, badge:'Especial' },
+  { id:19, cat:'Tazas',     name:'Taza Mágica 15 oz',     desc:'Taza mágica 15 oz tamaño grande. Revela el mensaje oculto con el calor de tu bebida favorita.', icon:'✨', image:'Img/taza11oz.jpeg', price:35 },
+
+  // ── TOMATODOS ──
+  { id:20, cat:'Tomatodos', name:'Vaso Térmico',           desc:'Vaso térmico personalizado. Mantiene frío y caliente. Ideal para llevar a todas partes.',        icon:'🥤', image:'Img/tomaTodo.JPG', price:45, badge:'Popular' },
+  { id:21, cat:'Tomatodos', name:'Tomatodo',               desc:'Tomatodo personalizado con tu diseño favorito. Práctico, resistente y lleno de amor.',           icon:'🍶', image:'Img/tomaTodo.JPG', price:40 },
 ];
 
 let currentCat='all', currentSearch='', currentProduct=null, qty=1;
@@ -211,12 +205,12 @@ function renderGrid(list){
       <div class="pcard">
         <div class="pcard-img">
           ${p.badge?`<span class="pcard-badge">${p.badge}</span>`:''}
-          ${p.icon}
+          <img src="${p.image}" alt="${p.name}" class="product-image">
         </div>
         <div class="pcard-body">
           <div class="pcard-cat">${p.cat}</div>
           <div class="pcard-name">${p.name}</div>
-          <div class="pcard-desc">${p.desc.substring(0,70)}…</div>
+          <div class="pcard-desc">${p.desc.substring(0,72)}…</div>
           <div class="pcard-price">S/ ${p.price}.00</div>
         </div>
         <button class="btn-pedir" onclick="openModal(${p.id})">💚 Personalizar y Pedir</button>
@@ -227,7 +221,10 @@ function renderGrid(list){
 function getFiltered(){
   let list=[...products];
   if(currentCat!=='all') list=list.filter(p=>p.cat===currentCat);
-  if(currentSearch) list=list.filter(p=>p.name.toLowerCase().includes(currentSearch)||p.cat.toLowerCase().includes(currentSearch)||p.desc.toLowerCase().includes(currentSearch));
+  if(currentSearch) list=list.filter(p=>
+    p.name.toLowerCase().includes(currentSearch)||
+    p.cat.toLowerCase().includes(currentSearch)||
+    p.desc.toLowerCase().includes(currentSearch));
   return list;
 }
 
@@ -251,39 +248,50 @@ function sortProducts(val){
   renderGrid(list);
 }
 
+// Opciones por categoría
+const catOptions = {
+  'Gorros':    [{label:'Color',type:'color',values:['#ffffff','#000000','#1a237e','#b71c1c','#33691e','#f5cba7']}],
+  'Bolsas':    [{label:'Color de estampado',type:'color',values:['#000000','#d4607a','#1a237e','#33691e']}],
+  'Polos':     [{label:'Color de polo',type:'color',values:['#ffffff','#ffb6c1','#c0392b','#2c3e50','#f5cba7','#000000']}],
+  'Tazas':     [],
+  'Tomatodos': [{label:'Color',type:'color',values:['#ffffff','#ffd1dc','#d4607a','#b0bec5','#000000']}],
+};
+
 function openModal(id){
   currentProduct=products.find(p=>p.id===id);
   qty=1;
   document.getElementById('qtyVal').textContent=1;
   document.getElementById('customText').value='';
   const p=currentProduct;
-  document.getElementById('modalImg').textContent=p.icon;
+  document.getElementById('modalImg').innerHTML=`<img src="${p.image}" alt="${p.name}" class="modal-product-image">`;
   document.getElementById('modalCat').textContent=p.cat;
   document.getElementById('modalName').textContent=p.name;
   document.getElementById('modalDesc').textContent=p.desc;
   document.getElementById('modalPrice').textContent=`S/ ${p.price}.00`;
+
   const container=document.getElementById('modalOptions');
   container.innerHTML='';
   Object.keys(selections).forEach(k=>delete selections[k]);
-  if(p.options){
-    p.options.forEach((opt,oi)=>{
-      selections[oi]=null;
-      const wrap=document.createElement('div');
-      wrap.classList.add('mb-3');
-      wrap.innerHTML=`<div class="opt-label">${opt.label}</div>`;
-      const group=document.createElement('div');
-      group.className='d-flex flex-wrap gap-2';
-      opt.values.forEach(v=>{
-        const btn=document.createElement('button');
-        if(opt.type==='color'){btn.className='color-btn';btn.style.background=v;btn.title=v;}
-        else{btn.className='opt-btn';btn.textContent=v;}
-        btn.onclick=()=>{group.querySelectorAll('button').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');selections[oi]={label:opt.label,value:v};};
-        group.appendChild(btn);
-      });
-      wrap.appendChild(group);
-      container.appendChild(wrap);
+
+  const opts=(catOptions[p.cat]||[]);
+  opts.forEach((opt,oi)=>{
+    selections[oi]=null;
+    const wrap=document.createElement('div');
+    wrap.classList.add('mb-3');
+    wrap.innerHTML=`<div class="opt-label">${opt.label}</div>`;
+    const group=document.createElement('div');
+    group.className='d-flex flex-wrap gap-2';
+    opt.values.forEach(v=>{
+      const btn=document.createElement('button');
+      if(opt.type==='color'){btn.className='color-btn';btn.style.background=v;btn.title=v;}
+      else{btn.className='opt-btn';btn.textContent=v;}
+      btn.onclick=()=>{group.querySelectorAll('button').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');selections[oi]={label:opt.label,value:v};};
+      group.appendChild(btn);
     });
-  }
+    wrap.appendChild(group);
+    container.appendChild(wrap);
+  });
+
   bsModal=new bootstrap.Modal(document.getElementById('productModal'));
   bsModal.show();
 }
