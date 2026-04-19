@@ -121,6 +121,7 @@
       height: 100%;
       object-fit: cover;
       object-position: center;
+	  border-radius: 20px 20px 0 0;
     }
     .modal-cat { font-size: .7rem; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; color: var(--rose); }
     .modal-name { font-family: 'Dancing Script', cursive; font-size: 1.9rem; color: var(--dark); }
@@ -172,6 +173,27 @@
       border: 1.5px solid rgba(212,96,122,.25); border-radius: 10px;
       font-family: 'Nunito', sans-serif; font-size: .85rem;
       color: #6a3040; background: #fff; outline: none; padding: .35rem .7rem;
+    }
+	/* Skeleton loader */
+    .skeleton-card {
+      background: #fff; border-radius: 16px; overflow: hidden;
+      border: 1px solid rgba(244,175,192,.3);
+    }
+    .skeleton-img {
+      height: 155px;
+      background: linear-gradient(90deg, #fde8ef 25%, #fff0f4 50%, #fde8ef 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+    }
+    .skeleton-line {
+      height: 10px; border-radius: 6px; margin-bottom: 8px;
+      background: linear-gradient(90deg, #fde8ef 25%, #fff0f4 50%, #fde8ef 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+    }
+    @keyframes shimmer {
+      0%   { background-position:  200% 0; }
+      100% { background-position: -200% 0; }
     }
 
     /* TOAST */
