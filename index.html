@@ -14,7 +14,7 @@
 <!-- ══ NAVBAR ══ -->
 <nav class="navbar navbar-expand-lg sticky-top shadow-sm">
   <div class="container-fluid px-3">
-    <a class="navbar-brand" href="#" onclick="filterCat('all')">♥ Camila <small>Dreams</small></a>
+    <a class="navbar-brand" href="#" onclick="filterCat('all')">Camila <small>Dreams</small></a>
     <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -71,7 +71,7 @@
   </button>
 </div>
 
-<!-- Pills de categorías -->
+<!-- Pills -->
 <div class="pills-bar d-flex flex-wrap justify-content-center gap-2 py-3">
   <button class="pill-btn active" onclick="filterCat('all',this)">Todo</button>
   <button class="pill-btn" onclick="filterCat('Gorros',this)">🧢 Gorros</button>
@@ -81,7 +81,7 @@
   <button class="pill-btn" onclick="filterCat('Tomatodos',this)">🍶 Tomatodos</button>
 </div>
 
-<!-- ══ MAIN LAYOUT ══ -->
+<!-- ══ LAYOUT ══ -->
 <div class="container-xl py-4">
   <div class="row g-4">
 
@@ -116,6 +116,13 @@
           <option value="price">Menor precio</option>
         </select>
       </div>
+      <!-- Skeleton mientras carga -->
+      <div class="row g-3" id="skeletonGrid">
+        <div class="col-6 col-md-4 col-xl-3"><div class="skeleton-card"><div class="skeleton-img"></div><div style="padding:.9rem"><div class="skeleton-line" style="width:50%"></div><div class="skeleton-line"></div><div class="skeleton-line" style="width:70%"></div></div></div></div>
+        <div class="col-6 col-md-4 col-xl-3"><div class="skeleton-card"><div class="skeleton-img"></div><div style="padding:.9rem"><div class="skeleton-line" style="width:50%"></div><div class="skeleton-line"></div><div class="skeleton-line" style="width:70%"></div></div></div></div>
+        <div class="col-6 col-md-4 col-xl-3"><div class="skeleton-card"><div class="skeleton-img"></div><div style="padding:.9rem"><div class="skeleton-line" style="width:50%"></div><div class="skeleton-line"></div><div class="skeleton-line" style="width:70%"></div></div></div></div>
+        <div class="col-6 col-md-4 col-xl-3"><div class="skeleton-card"><div class="skeleton-img"></div><div style="padding:.9rem"><div class="skeleton-line" style="width:50%"></div><div class="skeleton-line"></div><div class="skeleton-line" style="width:70%"></div></div></div></div>
+      </div>
       <div class="row g-3" id="productsGrid"></div>
     </div>
 
@@ -129,8 +136,8 @@
       <div class="modal-img" id="modalImg"></div>
       <div class="modal-body p-4" style="position:relative">
         <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal"></button>
-        <div class="modal-cat" id="modalCat"></div>
-        <div class="modal-name" id="modalName"></div>
+        <div class="modal-cat"   id="modalCat"></div>
+        <div class="modal-name"  id="modalName"></div>
         <p class="small mb-2" style="color:var(--muted)" id="modalDesc"></p>
         <div class="modal-price mb-3" id="modalPrice"></div>
         <div id="modalOptions"></div>
@@ -156,99 +163,45 @@
   <p class="mb-0 small">♥ <strong>Camila Dreams</strong> — Regalos personalizados con amor &nbsp;|&nbsp; Pedidos por WhatsApp</p>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-const WA_NUMBER = '51999999999'; // ← Tu número aquí
+// ── CONFIG ───────────────────────────────────────────────
+const WA_NUMBER    = '51987405124';
+const SUPABASE_URL = 'https://hubjyfjnnkmhvegrqwjb.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh1Ymp5ZmpubmttaHZlZ3Jxd2piIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1MzkxMjUsImV4cCI6MjA5MjExNTEyNX0.7w3Ni5BAmq76gK7cD5i7cyuN3XuO48Jx0BpuNtyL3iY';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-const products = [
-  // ── GORROS ──
-  { id:1,  cat:'Gorros',    name:'Gorro Drill Adulto',   desc:'Gorro de drill resistente, personalizado con tu diseño o frase favorita. Talla adulto.',          icon:'🧢', image:'Img/gorradrill.JPG', price:28 },
-  { id:2,  cat:'Gorros',    name:'Gorro Lona',            desc:'Gorro de lona premium personalizado. Ideal para el día a día con un toque especial.',              icon:'🎩', image:'Img/gorraLona.JPG', price:32 },
+// ── IMÁGENES LOCALES DE RESPALDO ─────────────────────────
+// Si Supabase no tiene imagen, usa la imagen local de la carpeta Img/
+const localImages = {
+  'Gorro Drill Adulto':  'Img/gorradrill.JPG',
+  'Gorro Lona':          'Img/gorraLona.JPG',
+  'Bolsa Taflán Blanca': 'Img/bolsa1.jpeg',
+  'Bolsa Drill Mediana': 'Img/bolso2.jpeg',
+  'Bolsa Drill Grande':  'Img/bolsa1.jpeg',
+  'Bolsa Tocuyo Grande': 'Img/BolsaTucuyo.png',
+  'Bolsa Yute':          'Img/BolsaDeYute.png',
+  'Polo Talla 8 (Niño)': 'Img/Polo1.jpeg',  // ← ajusta el nombre exacto en BD
+  'Polo Talla 8':        'Img/Polo1.jpeg',
+  'Polo Talla 10 (Niño)':'Img/Polo2.jpeg',
+  'Polo Talla 10':       'Img/Polo2.jpeg',
+  'Polo Talla S':        'Img/poloM.jpeg',
+  'Polo Talla M':        'Img/poloM.jpeg',
+  'Polo Talla L':        'Img/Polo1.jpeg',
+  'Polo Talla XL':       'Img/Polo2.jpeg',
+  'Taza Cónica 12 oz':   'Img/taza11oz.jpeg',
+  'Taza 17 oz':          'Img/taza11oz.jpeg',
+  'Taza 15 oz':          'Img/taza11oz.jpeg',
+  'Taza Corazón 11 oz':  'Img/taza11oz.jpeg',
+  'Taza Mágica 11 oz':   'Img/taza11oz.jpeg',
+  'Taza Mágica 15 oz':   'Img/taza11oz.jpeg',
+  'Vaso Térmico':        'Img/tomaTodo.JPG',
+  'Tomatodo':            'Img/tomaTodo.JPG',
+};
 
-  // ── BOLSAS ──
-  { id:3,  cat:'Bolsas',    name:'Bolsa Taflán Blanca',   desc:'Bolsa de taflán blanca personalizada, perfecta para regalos y eventos especiales.',               icon:'🛍️', image:'Img/bolsa1.jpeg', price:30 },
-  { id:4,  cat:'Bolsas',    name:'Bolsa Drill Mediana',   desc:'Bolsa de drill resistente tamaño mediano. Práctica y con diseño personalizado.',                  icon:'👜', image:'Img/bolso2.jpeg', price:32 },
-  { id:5,  cat:'Bolsas',    name:'Bolsa Drill Grande',    desc:'Bolsa de drill grande, ideal para llevar todo con estilo y un mensaje especial.',                  icon:'🎒', image:'Img/bolsa1.jpeg', price:35 },
-  { id:6,  cat:'Bolsas',    name:'Bolsa Tocuyo Grande',   desc:'Bolsa de tocuyo ecológica y resistente. Grande y personalizable.',                                icon:'👝', image:'Img/bolso2.jpeg', price:30 },
-  { id:7,  cat:'Bolsas',    name:'Bolsa Yute',            desc:'Bolsa de yute natural y elegante, personalizada con tu diseño. Eco-friendly.',                    icon:'🌿', image:'Img/bolsa-yute-personalizada.JPG', price:45, badge:'Premium' },
+const catEmoji = { Gorros:'🧢', Bolsas:'👜', Polos:'👕', Tazas:'☕', Tomatodos:'🍶' };
 
-  // ── POLOS ──
-  { id:8,  cat:'Polos',     name:'Polo Talla 8 (Niño)',   desc:'Polo personalizado para niño talla 8. Algodón suave con diseño a elección.',                      icon:'👕', image:'Img/Polo1.jpeg', price:38 },
-  { id:9,  cat:'Polos',     name:'Polo Talla 10 (Niño)',  desc:'Polo personalizado para niño talla 10. Cómodo, suave y con tu frase favorita.',                   icon:'👕', image:'Img/Polo2.jpeg', price:40 },
-  { id:10, cat:'Polos',     name:'Polo Talla S',          desc:'Polo adulto talla S personalizado. Ideal para regalar en cualquier ocasión especial.',             icon:'👕', image:'Img/poloM.jpeg', price:42 },
-  { id:11, cat:'Polos',     name:'Polo Talla M',          desc:'Polo adulto talla M personalizado con frase o diseño. 100% algodón.',                             icon:'👕', image:'Img/poloM.jpeg', price:45, badge:'Popular' },
-  { id:12, cat:'Polos',     name:'Polo Talla L',          desc:'Polo adulto talla L personalizado. Diseño único hecho con amor.',                                 icon:'👕', image:'Img/Polo1.jpeg', price:45 },
-  { id:13, cat:'Polos',     name:'Polo Talla XL',         desc:'Polo adulto talla XL personalizado. Amplio, cómodo y con el mensaje que elijas.',                 icon:'👕', image:'Img/Polo2.jpeg', price:48 },
-
-  // ── TAZAS ──
-  { id:14, cat:'Tazas',     name:'Taza Cónica 12 oz',     desc:'Taza cónica de cerámica 12 oz. Personalizada con tu foto o frase favorita. Apta para microondas.', icon:'☕', image:'Img/taza11oz.jpeg', price:22, badge:'Más vendida' },
-  //{ id:15, cat:'Tazas',     name:'Taza 17 oz',            desc:'Taza grande 17 oz personalizada. Para los que necesitan un café extra grande con amor.',          icon:'☕', price:26 },
-  { id:16, cat:'Tazas',     name:'Taza 15 oz',            desc:'Taza 15 oz personalizada con foto o diseño especial. Perfecta para regalar.',                    icon:'☕', image:'Img/taza11oz.jpeg', price:24 },
-  { id:17, cat:'Tazas',     name:'Taza Corazón 11 oz',    desc:'Taza en forma de corazón 11 oz. El regalo más romántico para quien más amas.',                   icon:'🫖', image:'Img/taza11oz.jpeg', price:25, badge:'Romántica' },
-  { id:18, cat:'Tazas',     name:'Taza Mágica 11 oz',     desc:'Taza mágica 11 oz: cambia de color al echarle agua caliente y revela tu diseño secreto.',        icon:'✨', image:'Img/taza11oz.jpeg', price:32, badge:'Especial' },
-  { id:19, cat:'Tazas',     name:'Taza Mágica 15 oz',     desc:'Taza mágica 15 oz tamaño grande. Revela el mensaje oculto con el calor de tu bebida favorita.', icon:'✨', image:'Img/taza11oz.jpeg', price:35 },
-
-  // ── TOMATODOS ──
-  { id:20, cat:'Tomatodos', name:'Vaso Térmico',           desc:'Vaso térmico personalizado. Mantiene frío y caliente. Ideal para llevar a todas partes.',        icon:'🥤', image:'Img/tomaTodo.JPG', price:45, badge:'Popular' },
-  { id:21, cat:'Tomatodos', name:'Tomatodo',               desc:'Tomatodo personalizado con tu diseño favorito. Práctico, resistente y lleno de amor.',           icon:'🍶', image:'Img/tomaTodo.JPG', price:40 },
-];
-
-let currentCat='all', currentSearch='', currentProduct=null, qty=1;
-const selections={};
-let bsModal;
-
-function renderGrid(list){
-  const grid=document.getElementById('productsGrid');
-  if(!list.length){grid.innerHTML='<div class="col-12 text-center py-5 empty-msg">No se encontraron productos 😕</div>';return;}
-  grid.innerHTML=list.map(p=>`
-    <div class="col-6 col-md-4 col-xl-3">
-      <div class="pcard">
-        <div class="pcard-img">
-          ${p.badge?`<span class="pcard-badge">${p.badge}</span>`:''}
-          <img src="${p.image}" alt="${p.name}" class="product-image">
-        </div>
-        <div class="pcard-body">
-          <div class="pcard-cat">${p.cat}</div>
-          <div class="pcard-name">${p.name}</div>
-          <div class="pcard-desc">${p.desc.substring(0,72)}…</div>
-          <div class="pcard-price">S/ ${p.price}.00</div>
-        </div>
-        <button class="btn-pedir" onclick="openModal(${p.id})">💚 Personalizar y Pedir</button>
-      </div>
-    </div>`).join('');
-}
-
-function getFiltered(){
-  let list=[...products];
-  if(currentCat!=='all') list=list.filter(p=>p.cat===currentCat);
-  if(currentSearch) list=list.filter(p=>
-    p.name.toLowerCase().includes(currentSearch)||
-    p.cat.toLowerCase().includes(currentSearch)||
-    p.desc.toLowerCase().includes(currentSearch));
-  return list;
-}
-
-function filterCat(cat,el){
-  currentCat=cat;
-  document.getElementById('gridTitle').textContent=cat==='all'?'Todos los productos':cat;
-  document.querySelectorAll('.cat-item,.pill-btn').forEach(b=>b.classList.remove('active'));
-  if(el){
-    document.querySelectorAll('.cat-item').forEach(b=>{if(b.textContent.includes(cat==='all'?'Todos':cat))b.classList.add('active');});
-    document.querySelectorAll('.pill-btn').forEach(b=>{if(b.textContent.includes(cat==='all'?'Todo':cat))b.classList.add('active');});
-  }
-  renderGrid(getFiltered());
-}
-
-function filterSearch(){currentSearch=document.getElementById('searchInput').value.toLowerCase();renderGrid(getFiltered());}
-
-function sortProducts(val){
-  let list=getFiltered();
-  if(val==='name') list.sort((a,b)=>a.name.localeCompare(b.name));
-  if(val==='price') list.sort((a,b)=>a.price-b.price);
-  renderGrid(list);
-}
-
-// Opciones por categoría
 const catOptions = {
   'Gorros':    [{label:'Color',type:'color',values:['#ffffff','#000000','#1a237e','#b71c1c','#33691e','#f5cba7']}],
   'Bolsas':    [{label:'Color de estampado',type:'color',values:['#000000','#d4607a','#1a237e','#33691e']}],
@@ -257,68 +210,210 @@ const catOptions = {
   'Tomatodos': [{label:'Color',type:'color',values:['#ffffff','#ffd1dc','#d4607a','#b0bec5','#000000']}],
 };
 
-function openModal(id){
-  currentProduct=products.find(p=>p.id===id);
-  qty=1;
-  document.getElementById('qtyVal').textContent=1;
-  document.getElementById('customText').value='';
-  const p=currentProduct;
-  document.getElementById('modalImg').innerHTML=`<img src="${p.image}" alt="${p.name}" class="modal-product-image">`;
-  document.getElementById('modalCat').textContent=p.cat;
-  document.getElementById('modalName').textContent=p.name;
-  document.getElementById('modalDesc').textContent=p.desc;
-  document.getElementById('modalPrice').textContent=`S/ ${p.price}.00`;
+// ── STATE ────────────────────────────────────────────────
+let allProducts = [], currentCat = 'all', currentSearch = '';
+let currentProduct = null, qty = 1;
+const selections = {};
+let bsModal;
 
-  const container=document.getElementById('modalOptions');
-  container.innerHTML='';
-  Object.keys(selections).forEach(k=>delete selections[k]);
+// ── CARGAR DESDE SUPABASE ────────────────────────────────
+async function loadProducts() {
+  try {
+    const { data, error } = await sb
+      .from('productos')
+      .select('*')
+      .eq('activo', true)
+      .order('categoria')
+      .order('nombre');
 
-  const opts=(catOptions[p.cat]||[]);
-  opts.forEach((opt,oi)=>{
-    selections[oi]=null;
-    const wrap=document.createElement('div');
+    if (error) throw error;
+
+    // Combina: si Supabase tiene imagen_url la usa, si no usa la local
+    allProducts = data.map(p => ({
+      ...p,
+      imagen_final: p.imagen_url || localImages[p.nombre] || null,
+    }));
+
+  } catch (e) {
+    // Si Supabase falla, usa los datos locales de respaldo
+    console.warn('Supabase no disponible, usando datos locales');
+    allProducts = localFallback;
+  }
+
+  document.getElementById('skeletonGrid').style.display = 'none';
+  renderGrid(getFiltered());
+}
+
+// ── RENDER ───────────────────────────────────────────────
+function renderGrid(list) {
+  const grid = document.getElementById('productsGrid');
+  grid.style.display = '';
+
+  if (!list.length) {
+    grid.innerHTML = '<div class="col-12 text-center py-5 empty-msg">No se encontraron productos 😕</div>';
+    return;
+  }
+
+  grid.innerHTML = list.map(p => {
+    const imgSrc = p.imagen_final;
+    const imgHtml = imgSrc
+      ? `<img src="${imgSrc}" alt="${p.nombre}" class="product-image" onerror="this.parentElement.innerHTML='<span style=\\'font-size:3.5rem\\'>${catEmoji[p.categoria]||'🎁'}</span>'">`
+      : `<span style="font-size:3.5rem">${catEmoji[p.categoria]||'🎁'}</span>`;
+
+    return `
+    <div class="col-6 col-md-4 col-xl-3">
+      <div class="pcard">
+        <div class="pcard-img">
+          ${p.badge ? `<span class="pcard-badge">${p.badge}</span>` : ''}
+          ${imgHtml}
+        </div>
+        <div class="pcard-body">
+          <div class="pcard-cat">${p.categoria}</div>
+          <div class="pcard-name">${p.nombre}</div>
+          <div class="pcard-desc">${(p.descripcion||'').substring(0,72)}…</div>
+          <div class="pcard-price">S/ ${parseFloat(p.precio).toFixed(2)}</div>
+        </div>
+        <button class="btn-pedir" onclick="openModal('${p.id}')">💚 Personalizar y Pedir</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function getFiltered() {
+  let list = [...allProducts];
+  if (currentCat !== 'all') list = list.filter(p => p.categoria === currentCat);
+  if (currentSearch) list = list.filter(p =>
+    p.nombre.toLowerCase().includes(currentSearch) ||
+    p.categoria.toLowerCase().includes(currentSearch) ||
+    (p.descripcion||'').toLowerCase().includes(currentSearch)
+  );
+  return list;
+}
+
+function filterCat(cat, el) {
+  currentCat = cat;
+  document.getElementById('gridTitle').textContent = cat === 'all' ? 'Todos los productos' : cat;
+  document.querySelectorAll('.cat-item,.pill-btn').forEach(b => b.classList.remove('active'));
+  if (el) {
+    document.querySelectorAll('.cat-item').forEach(b => { if (b.textContent.includes(cat==='all'?'Todos':cat)) b.classList.add('active'); });
+    document.querySelectorAll('.pill-btn').forEach(b => { if (b.textContent.includes(cat==='all'?'Todo':cat)) b.classList.add('active'); });
+  }
+  renderGrid(getFiltered());
+}
+
+function filterSearch() {
+  currentSearch = document.getElementById('searchInput').value.toLowerCase();
+  renderGrid(getFiltered());
+}
+
+function sortProducts(val) {
+  let list = getFiltered();
+  if (val === 'name')  list.sort((a,b) => a.nombre.localeCompare(b.nombre));
+  if (val === 'price') list.sort((a,b) => a.precio - b.precio);
+  renderGrid(list);
+}
+
+// ── MODAL ────────────────────────────────────────────────
+function openModal(id) {
+  currentProduct = allProducts.find(p => p.id === id);
+  if (!currentProduct) return;
+  qty = 1;
+  document.getElementById('qtyVal').textContent = 1;
+  document.getElementById('customText').value   = '';
+  const p = currentProduct;
+
+  const imgSrc = p.imagen_final;
+  document.getElementById('modalImg').innerHTML = imgSrc
+    ? `<img src="${imgSrc}" alt="${p.nombre}" class="modal-product-image">`
+    : `<span style="font-size:5rem">${catEmoji[p.categoria]||'🎁'}</span>`;
+
+  document.getElementById('modalCat').textContent   = p.categoria;
+  document.getElementById('modalName').textContent  = p.nombre;
+  document.getElementById('modalDesc').textContent  = p.descripcion || '';
+  document.getElementById('modalPrice').textContent = `S/ ${parseFloat(p.precio).toFixed(2)}`;
+
+  const container = document.getElementById('modalOptions');
+  container.innerHTML = '';
+  Object.keys(selections).forEach(k => delete selections[k]);
+
+  (catOptions[p.categoria] || []).forEach((opt, oi) => {
+    selections[oi] = null;
+    const wrap = document.createElement('div');
     wrap.classList.add('mb-3');
-    wrap.innerHTML=`<div class="opt-label">${opt.label}</div>`;
-    const group=document.createElement('div');
-    group.className='d-flex flex-wrap gap-2';
-    opt.values.forEach(v=>{
-      const btn=document.createElement('button');
-      if(opt.type==='color'){btn.className='color-btn';btn.style.background=v;btn.title=v;}
-      else{btn.className='opt-btn';btn.textContent=v;}
-      btn.onclick=()=>{group.querySelectorAll('button').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');selections[oi]={label:opt.label,value:v};};
+    wrap.innerHTML = `<div class="opt-label">${opt.label}</div>`;
+    const group = document.createElement('div');
+    group.className = 'd-flex flex-wrap gap-2';
+    opt.values.forEach(v => {
+      const btn = document.createElement('button');
+      if (opt.type === 'color') { btn.className='color-btn'; btn.style.background=v; btn.title=v; }
+      else { btn.className='opt-btn'; btn.textContent=v; }
+      btn.onclick = () => {
+        group.querySelectorAll('button').forEach(b => b.classList.remove('sel'));
+        btn.classList.add('sel');
+        selections[oi] = { label: opt.label, value: v };
+      };
       group.appendChild(btn);
     });
     wrap.appendChild(group);
     container.appendChild(wrap);
   });
 
-  bsModal=new bootstrap.Modal(document.getElementById('productModal'));
+  bsModal = new bootstrap.Modal(document.getElementById('productModal'));
   bsModal.show();
 }
 
-function changeQty(d){qty=Math.max(1,qty+d);document.getElementById('qtyVal').textContent=qty;}
+function changeQty(d) { qty = Math.max(1, qty+d); document.getElementById('qtyVal').textContent = qty; }
 
-function sendWA(){
-  const p=currentProduct;
-  const custom=document.getElementById('customText').value.trim();
-  const opts=Object.values(selections).filter(Boolean).map(s=>`  • ${s.label}: ${s.value}`).join('\n');
-  let msg=`¡Hola Camila Dreams! 💕 Quisiera hacer un pedido:\n\n`;
-  msg+=`🛍️ *Producto:* ${p.name}\n🏷️ *Categoría:* ${p.cat}\n💰 *Precio unitario:* S/ ${p.price}.00\n📦 *Cantidad:* ${qty}\n`;
-  if(opts) msg+=`\n✨ *Personalización:*\n${opts}\n`;
-  if(custom) msg+=`\n💬 *Mensaje/Frase:* "${custom}"\n`;
-  msg+=`\n¡Espero su respuesta! 😊`;
+// ── WHATSAPP ─────────────────────────────────────────────
+function sendWA() {
+  const p = currentProduct;
+  const custom = document.getElementById('customText').value.trim();
+  const opts = Object.values(selections).filter(Boolean).map(s => `  • ${s.label}: ${s.value}`).join('\n');
+  let msg = `¡Hola Camila Dreams! 💕 Quisiera hacer un pedido:\n\n`;
+  msg += `🛍️ *Producto:* ${p.nombre}\n`;
+  msg += `🏷️ *Categoría:* ${p.categoria}\n`;
+  msg += `💰 *Precio unitario:* S/ ${parseFloat(p.precio).toFixed(2)}\n`;
+  msg += `📦 *Cantidad:* ${qty}\n`;
+  if (opts)   msg += `\n✨ *Personalización:*\n${opts}\n`;
+  if (custom) msg += `\n💬 *Mensaje/Frase:* "${custom}"\n`;
+  msg += `\n¡Espero su respuesta! 😊`;
   openWA(msg);
-  if(bsModal) bsModal.hide();
+  if (bsModal) bsModal.hide();
 }
 
-function openWA(msg){
-  window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`,'_blank');
-  const t=document.getElementById('toast');
+function openWA(msg) {
+  window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
+  const t = document.getElementById('toast');
   t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2800);
+  setTimeout(() => t.classList.remove('show'), 2800);
 }
 
-renderGrid(products);
+// ── DATOS LOCALES DE RESPALDO (si Supabase falla) ────────
+const localFallback = [
+  { id:'1',  categoria:'Gorros',    nombre:'Gorro Drill Adulto',   descripcion:'Gorro de drill resistente, personalizado con tu diseño o frase favorita.',  precio:28, badge:null,       imagen_final:'Img/gorradrill.JPG' },
+  { id:'2',  categoria:'Gorros',    nombre:'Gorro Lona',            descripcion:'Gorro de lona premium personalizado. Ideal para el día a día.',              precio:32, badge:null,       imagen_final:'Img/gorraLona.JPG' },
+  { id:'3',  categoria:'Bolsas',    nombre:'Bolsa Taflán Blanca',   descripcion:'Bolsa de taflán blanca personalizada, perfecta para regalos.',               precio:30, badge:null,       imagen_final:'Img/bolsa1.jpeg' },
+  { id:'4',  categoria:'Bolsas',    nombre:'Bolsa Drill Mediana',   descripcion:'Bolsa de drill resistente tamaño mediano. Práctica y personalizada.',        precio:32, badge:null,       imagen_final:'Img/bolso2.jpeg' },
+  { id:'5',  categoria:'Bolsas',    nombre:'Bolsa Drill Grande',    descripcion:'Bolsa de drill grande, ideal para llevar todo con estilo.',                  precio:35, badge:null,       imagen_final:'Img/bolsa1.jpeg' },
+  { id:'6',  categoria:'Bolsas',    nombre:'Bolsa Tocuyo Grande',   descripcion:'Bolsa de tocuyo ecológica y resistente. Grande y personalizable.',           precio:30, badge:null,       imagen_final:'Img/BolsaTucuyo.png' },
+  { id:'7',  categoria:'Bolsas',    nombre:'Bolsa Yute',            descripcion:'Bolsa de yute natural y elegante, personalizada con tu diseño.',             precio:45, badge:'Premium',  imagen_final:'Img/BolsaDeYute.png' },
+  { id:'8',  categoria:'Polos',     nombre:'Polo Talla 8',          descripcion:'Polo personalizado para niño talla 8. Algodón suave.',                       precio:38, badge:null,       imagen_final:'Img/Polo1.jpeg' },
+  { id:'9',  categoria:'Polos',     nombre:'Polo Talla 10',         descripcion:'Polo personalizado para niño talla 10. Cómodo y con tu frase favorita.',     precio:40, badge:null,       imagen_final:'Img/Polo2.jpeg' },
+  { id:'10', categoria:'Polos',     nombre:'Polo Talla S',          descripcion:'Polo adulto talla S personalizado.',                                         precio:42, badge:null,       imagen_final:'Img/poloM.jpeg' },
+  { id:'11', categoria:'Polos',     nombre:'Polo Talla M',          descripcion:'Polo adulto talla M personalizado. 100% algodón.',                           precio:45, badge:'Popular',  imagen_final:'Img/poloM.jpeg' },
+  { id:'12', categoria:'Polos',     nombre:'Polo Talla L',          descripcion:'Polo adulto talla L personalizado.',                                         precio:45, badge:null,       imagen_final:'Img/Polo1.jpeg' },
+  { id:'13', categoria:'Polos',     nombre:'Polo Talla XL',         descripcion:'Polo adulto talla XL personalizado. Amplio y cómodo.',                       precio:48, badge:null,       imagen_final:'Img/Polo2.jpeg' },
+  { id:'14', categoria:'Tazas',     nombre:'Taza Cónica 12 oz',     descripcion:'Taza cónica de cerámica 12 oz personalizada. Apta para microondas.',         precio:22, badge:'Más vendida', imagen_final:'Img/taza11oz.jpeg' },
+  { id:'16', categoria:'Tazas',     nombre:'Taza 15 oz',            descripcion:'Taza 15 oz personalizada con foto o diseño especial.',                       precio:24, badge:null,       imagen_final:'Img/taza11oz.jpeg' },
+  { id:'17', categoria:'Tazas',     nombre:'Taza Corazón 11 oz',    descripcion:'Taza en forma de corazón 11 oz. El regalo más romántico.',                   precio:25, badge:'Romántica',imagen_final:'Img/taza11oz.jpeg' },
+  { id:'18', categoria:'Tazas',     nombre:'Taza Mágica 11 oz',     descripcion:'Taza mágica que cambia de color al echarle agua caliente.',                  precio:32, badge:'Especial', imagen_final:'Img/taza11oz.jpeg' },
+  { id:'19', categoria:'Tazas',     nombre:'Taza Mágica 15 oz',     descripcion:'Taza mágica 15 oz. Revela el mensaje con el calor.',                         precio:35, badge:null,       imagen_final:'Img/taza11oz.jpeg' },
+  { id:'20', categoria:'Tomatodos', nombre:'Vaso Térmico',           descripcion:'Vaso térmico personalizado. Mantiene frío y caliente.',                      precio:45, badge:'Popular',  imagen_final:'Img/tomaTodo.JPG' },
+  { id:'21', categoria:'Tomatodos', nombre:'Tomatodo',               descripcion:'Tomatodo personalizado con tu diseño favorito.',                             precio:40, badge:null,       imagen_final:'Img/tomaTodo.JPG' },
+];
+
+// ── INIT ─────────────────────────────────────────────────
+loadProducts();
 </script>
 </body>
 </html>
