@@ -1,4 +1,4 @@
-    :root {
+:root {
       --rose:       #d4607a;
       --rose-dark:  #b04060;
       --rose-light: #f4afc0;
@@ -62,7 +62,7 @@
     .cat-item:hover, .cat-item.active { background: var(--rose-pale); color: var(--rose); }
     .form-check-input:checked { background-color: var(--rose); border-color: var(--rose); }
 
-    /* PRODUCT CARD */
+    /* ── PRODUCT CARD ── */
     .pcard {
       background: #fff; border-radius: 16px;
       border: 1px solid rgba(244,175,192,.3);
@@ -71,24 +71,30 @@
       overflow: hidden; display: flex; flex-direction: column; height: 100%;
     }
     .pcard:hover { transform: translateY(-6px); box-shadow: 0 14px 32px rgba(212,96,122,.22); }
+
     .pcard-img {
-      height: 155px; display: flex; align-items: center; justify-content: center;
+      height: 220px;
+      display: flex; align-items: center; justify-content: center;
       font-size: 4rem;
       background: linear-gradient(135deg,var(--rose-pale),#fff8f9);
       position: relative;
       overflow: hidden;
     }
+
     .product-image {
       width: 100%;
       height: 100%;
       object-fit: cover;
       object-position: center;
+      display: block;
     }
+
     .pcard-badge {
       position: absolute; top: 10px; left: 10px;
       background: var(--rose); color: #fff;
       font-size: .62rem; font-weight: 800; letter-spacing: .06em;
       padding: .18rem .5rem; border-radius: 8px; text-transform: uppercase;
+      z-index: 2;
     }
     .pcard-body { padding: .9rem; flex: 1; display: flex; flex-direction: column; }
     .pcard-cat { font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--rose); }
@@ -107,22 +113,27 @@
     }
     .btn-pedir:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(212,96,122,.45); }
 
-    /* MODAL */
+    /* ── MODAL ── */
     .modal-content { border-radius: 20px; border: none; }
+
     .modal-img {
-      height: 200px; display: flex; align-items: center; justify-content: center;
+      height: 300px;
+      display: flex; align-items: center; justify-content: center;
       font-size: 5.5rem;
       background: linear-gradient(135deg,var(--rose-pale),#fff0f4);
       border-radius: 20px 20px 0 0;
       overflow: hidden;
     }
+
     .modal-product-image {
       width: 100%;
       height: 100%;
       object-fit: cover;
       object-position: center;
-	  border-radius: 20px 20px 0 0;
+      border-radius: 20px 20px 0 0;
+      display: block;
     }
+
     .modal-cat { font-size: .7rem; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; color: var(--rose); }
     .modal-name { font-family: 'Dancing Script', cursive; font-size: 1.9rem; color: var(--dark); }
     .modal-price { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--rose); }
@@ -168,19 +179,16 @@
     .btn-wa-modal:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(37,211,102,.45); }
 
     .section-title { font-family: 'Dancing Script', cursive; font-size: 1.7rem; color: var(--dark); }
-
     .sort-select {
       border: 1.5px solid rgba(212,96,122,.25); border-radius: 10px;
       font-family: 'Nunito', sans-serif; font-size: .85rem;
       color: #6a3040; background: #fff; outline: none; padding: .35rem .7rem;
     }
-	/* Skeleton loader */
-    .skeleton-card {
-      background: #fff; border-radius: 16px; overflow: hidden;
-      border: 1px solid rgba(244,175,192,.3);
-    }
+
+    /* Skeleton loader */
+    .skeleton-card { background: #fff; border-radius: 16px; overflow: hidden; border: 1px solid rgba(244,175,192,.3); }
     .skeleton-img {
-      height: 155px;
+      height: 220px;
       background: linear-gradient(90deg, #fde8ef 25%, #fff0f4 50%, #fde8ef 75%);
       background-size: 200% 100%;
       animation: shimmer 1.4s infinite;
@@ -214,53 +222,27 @@
       font-family: 'Nunito', sans-serif; font-size: .88rem; color: #6a3040;
     }
     .search-wrapper .form-control:focus { border-color: var(--rose); box-shadow: 0 0 0 3px rgba(212,96,122,.15); }
-
     .empty-msg { color: var(--muted); font-style: italic; }
 
-/* ── CARRUSEL ── */
-.carousel-banner {
-  max-height: 420px;
-  object-fit: cover;
-  object-position: center top;
-  width: 100%;
-}
-.hero-slide {
-  height: 420px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 2rem;
-}
-.slide-2 { background: linear-gradient(135deg, #fde8ef 0%, #fff4f8 100%); }
-.slide-3 { background: linear-gradient(135deg, #fff0f5 0%, #fde8ef 100%); }
-.hero-slide-content h2 {
-  font-family: 'Dancing Script', cursive;
-  font-size: clamp(2rem, 6vw, 3.5rem);
-  color: var(--dark);
-  margin: .5rem 0;
-}
-.hero-slide-content p {
-  font-family: 'Playfair Display', serif;
-  font-style: italic;
-  color: var(--muted);
-  margin-bottom: .5rem;
-}
-.carousel-indicators [data-bs-target] {
-  width: 10px; height: 10px;
-  border-radius: 50%;
-  background-color: var(--rose);
-  opacity: .5;
-}
-.carousel-indicators .active { opacity: 1; }
-.carousel-control-prev-icon,
-.carousel-control-next-icon {
-  filter: invert(35%) sepia(60%) saturate(400%) hue-rotate(300deg);
-}
-.pills-bar { background: #fde8ef; border-bottom: 1px solid rgba(212,96,122,.15); }
+    /* ── CARRUSEL ── */
+    .carousel-banner { max-height: 420px; object-fit: cover; object-position: center top; width: 100%; }
+    .hero-slide { height: 420px; display: flex; align-items: center; justify-content: center; text-align: center; padding: 2rem; }
+    .slide-2 { background: linear-gradient(135deg, #fde8ef 0%, #fff4f8 100%); }
+    .slide-3 { background: linear-gradient(135deg, #fff0f5 0%, #fde8ef 100%); }
+    .hero-slide-content h2 { font-family: 'Dancing Script', cursive; font-size: clamp(2rem, 6vw, 3.5rem); color: var(--dark); margin: .5rem 0; }
+    .hero-slide-content p  { font-family: 'Playfair Display', serif; font-style: italic; color: var(--muted); margin-bottom: .5rem; }
+    .carousel-indicators [data-bs-target] { width: 10px; height: 10px; border-radius: 50%; background-color: var(--rose); opacity: .5; }
+    .carousel-indicators .active { opacity: 1; }
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon { filter: invert(35%) sepia(60%) saturate(400%) hue-rotate(300deg); }
+    .pills-bar { background: #fde8ef; border-bottom: 1px solid rgba(212,96,122,.15); }
 
-@media(max-width: 576px) {
-  .carousel-banner { max-height: 220px; }
-  .hero-slide { height: 260px; }
-  .hero-slide-content h2 { font-size: 1.8rem; }
-}
+    /* ── RESPONSIVE ── */
+    @media(max-width: 576px) {
+      .carousel-banner      { max-height: 220px; }
+      .hero-slide           { height: 260px; }
+      .hero-slide-content h2{ font-size: 1.8rem; }
+      .pcard-img            { height: 180px; }
+      .modal-img            { height: 240px; }
+      .skeleton-img         { height: 180px; }
+    }
